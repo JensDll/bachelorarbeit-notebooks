@@ -139,5 +139,3 @@ cython_debug/
 
 *.tflite
 *.h5
-
-*.pdf
