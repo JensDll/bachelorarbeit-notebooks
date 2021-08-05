@@ -1,6 +1,7 @@
 import time
-import tensorflow as tf
+import tflite_runtime.interpreter as tflite
 import platform
+import numpy as np
 
 EDGETUP_LIB = {
     "Linux": "libedgetpu.so.1",
@@ -8,11 +9,11 @@ EDGETUP_LIB = {
     "Windows": "edgetpu.dll",
 }[platform.system()]
 
-delegates = [tf.lite.experimental.load_delegate(EDGETUP_LIB)]
+delegates = [tflite.load_delegate(EDGETUP_LIB)]
 
-insect_model_cpu = tf.lite.Interpreter("mobilenet_v2_inat_insect_quant.tflite")
+insect_model_cpu = tflite.Interpreter("mobilenet_v2_inat_insect_quant.tflite")
 
-insect_model_tpu = tf.lite.Interpreter(
+insect_model_tpu = tflite.Interpreter(
     "mobilenet_v2_inat_insect_quant_edgetpu.tflite", experimental_delegates=delegates
 )
 
@@ -27,9 +28,9 @@ input_index_tpu = input_details_tpu["index"]
 
 input_shape = input_details_cpu["shape"][1:]
 
-test_data = tf.random.uniform(input_shape, minval=0, maxval=256)
-test_data = tf.cast(test_data, dtype=tf.uint8)
-test_data = tf.expand_dims(test_data, axis=0)
+rng = np.random.default_rng(42)
+test_data = rng.integers(low=0, high=256, size=input_shape, dtype=np.uint8)
+test_data = np.expand_dims(test_data, axis=0)
 
 result = 0
 
