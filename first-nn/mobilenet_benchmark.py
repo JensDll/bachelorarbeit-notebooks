@@ -11,14 +11,14 @@ EDGETUP_LIB = {
 
 delegates = [tflite.load_delegate(EDGETUP_LIB)]
 
-insect_model_cpu = tflite.Interpreter("mobilenet_v2_inat_insect_quant.tflite")
+insect_model_cpu = tflite.Interpreter("mobilenet_v2_1.0_224_inat_insect_quant.tflite")
 insect_model_tpu = tflite.Interpreter(
-    "mobilenet_v2_inat_insect_quant_edgetpu.tflite", experimental_delegates=delegates
+    "mobilenet_v2_1.0_224_inat_insect_quant_edgetpu.tflite",
+    experimental_delegates=delegates,
 )
 
 insect_model_cpu.allocate_tensors()
 insect_model_tpu.allocate_tensors()
-
 
 rng = np.random.default_rng(42)
 
