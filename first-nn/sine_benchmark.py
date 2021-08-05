@@ -30,8 +30,12 @@ def measure_performance(model: tflite.Interpreter):
     input_shape = input_details["shape"]
     dtype = input_details["dtype"]
 
-    test_data = rng.integers(low=0, high=6, size=[20000, *input_shape])
-    test_data = test_data.astype(dtype)
+    test_data = rng.random(size=[20000, *input_shape], dtype=np.float32) * 6
+
+    if dtype == np.int8:
+        input_scale, input_zero_point = input_details["quantization"]
+        test_data = test_data / input_scale + input_zero_point
+        test_data = test_data.astype(dtype)
 
     result = 0
     for i, value in enumerate(test_data):
