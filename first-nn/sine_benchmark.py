@@ -14,7 +14,8 @@ delegates = [tflite.load_delegate(EDGETUP_LIB)]
 sine_model_cpu = tflite.Interpreter("sine_model.tflite")
 sine_model_quant_cpu = tflite.Interpreter("sine_model_quant.tflite")
 sine_model_tpu = tflite.Interpreter(
-    "sine_model_quant_edgetpu.tflite", experimental_delegates=delegates
+    "sine_model_quant_edgetpu.tflite",
+    experimental_delegates=[tflite.load_delegate(EDGETUP_LIB)],
 )
 
 sine_model_cpu.allocate_tensors()
