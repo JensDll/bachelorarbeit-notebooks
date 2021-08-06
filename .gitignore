@@ -140,3 +140,4 @@ cython_debug/
 *.tflite
 *.h5
 *.gz
+*.pdf
