@@ -31,17 +31,17 @@ def measure_performance(model: tflite.Interpreter):
     test_data = rng.integers(low=0, high=256, size=[1, *input_shape], dtype=np.uint8)
 
     result = 0
-    for i in range(11):
+    for i in range(12):
         model.set_tensor(input_index, test_data)
         start = time.perf_counter()
         model.invoke()
         inference_time = (time.perf_counter() - start) * 1000
-        if i > 0:
+        if i > 1:
             result += inference_time
     return result
 
 
 result = measure_performance(insect_model_cpu)
-print(f"CPU Inferenz Zeit: {result} ms")
+print(f"CPU Inferenzgeschwindigkeit: {result:.4f} ms")
 result = measure_performance(insect_model_tpu)
-print(f"TPU Inferenz Zeit: {result} ms")
+print(f"TPU Inferenzgeschwindigkeit: {result:.4f} ms")

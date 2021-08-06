@@ -50,8 +50,8 @@ def measure_performance(model: tflite.Interpreter):
 
 
 result = measure_performance(sine_model_cpu)
-print(f"CPU Inferenz Zeit: {result} ms")
+print(f"CPU Inferenzgeschwindigkeit: {result:.4f} ms")
 result = measure_performance(sine_model_quant_cpu)
-print(f"CPU quantisierte Inferenz Zeit: {result} ms")
+print(f"CPU quantisierte Inferenzgeschwindigkeit: {result:.4f} ms")
 result = measure_performance(sine_model_tpu)
-print(f"TPU Inferenz Zeit: {result} ms")
+print(f"TPU Inferenzgeschwindigkeit: {result:.4f} ms")
