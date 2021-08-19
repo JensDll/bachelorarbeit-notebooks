@@ -2,6 +2,7 @@ import time
 import tflite_runtime.interpreter as tflite
 import platform
 import numpy as np
+import os
 
 EDGETUP_LIB = {
     "Linux": "libedgetpu.so.1",
@@ -30,18 +31,30 @@ def measure_performance(model: tflite.Interpreter):
 
     test_data = rng.integers(low=0, high=256, size=[1, *input_shape], dtype=np.uint8)
 
-    result = 0
-    for i in range(12):
+    inference_times = []
+
+    for i in range(11):
         model.set_tensor(input_index, test_data)
         start = time.perf_counter()
         model.invoke()
         inference_time = (time.perf_counter() - start) * 1000
-        if i > 1:
-            result += inference_time
-    return result
+        if not i == 0:
+            inference_times.append(inference_time)
+
+    return np.array(inference_times)
+
+
+def write_to_file(result: np.ndarray, name):
+    if not os.path.isdir("results"):
+        os.mkdir("results")
+    with open(f"results/{name}.npy", "wb") as f:
+        np.save(f, result)
 
 
 result = measure_performance(insect_model_cpu)
-print(f"CPU Inferenzgeschwindigkeit: {result:.4f} ms")
+write_to_file(result, "mobilenet_cpu_quant")
+print(f"CPU Inferenzgeschwindigkeit: {result.sum():.4f} ms")
+
 result = measure_performance(insect_model_tpu)
-print(f"TPU Inferenzgeschwindigkeit: {result:.4f} ms")
+write_to_file(result, "mobilenet_tpu")
+print(f"TPU Inferenzgeschwindigkeit: {result.sum():.4f} ms")
