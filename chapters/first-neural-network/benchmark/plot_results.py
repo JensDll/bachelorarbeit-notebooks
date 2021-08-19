@@ -26,13 +26,14 @@ def save_fig(name, tight_layout=True):
 
 def plot_sine():
     styles = (
-        ("results/sine_cpu.npy", "b-"),
-        ("results/sine_tpu.npy", "g-"),
-        ("results/sine_cpu_quant.npy", "y-"),
+        ("data/sine_cpu.npy", "b-"),
+        ("data/sine_tpu.npy", "g-"),
+        ("data/sine_cpu_quant.npy", "y-"),
     )
 
     for npy, style in styles:
         data = np.load(npy)
+        plt.xlim(1, len(data))
         plt.plot(range(1, len(data) + 1), data, style, linewidth=0.8)
 
     save_fig("sine_model_inference_time")
@@ -41,12 +42,13 @@ def plot_sine():
 
 def plot_mobilenet():
     styles = (
-        ("results/mobilenet_cpu_quant.npy", "b-"),
-        ("results/mobilenet_tpu.npy", "g-"),
+        ("data/mobilenet_cpu_quant.npy", "b-"),
+        ("data/mobilenet_tpu.npy", "g-"),
     )
 
     for npy, style in styles:
         data = np.load(npy)
+        plt.xlim([1, len(data)])
         plt.plot(range(1, len(data) + 1), data, style, linewidth=0.8)
 
     save_fig("mobilenet_inference_time")

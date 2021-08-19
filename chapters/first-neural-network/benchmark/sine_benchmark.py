@@ -32,7 +32,7 @@ def measure_performance(model: tflite.Interpreter):
     input_shape = input_details["shape"]
     dtype = input_details["dtype"]
 
-    test_data = rng.random(size=[1001, *input_shape], dtype=np.float32) * 6
+    test_data = rng.random(size=[1010, *input_shape], dtype=np.float32) * 6
 
     if dtype == np.int8:
         input_scale, input_zero_point = input_details["quantization"]
@@ -46,7 +46,7 @@ def measure_performance(model: tflite.Interpreter):
         start = time.perf_counter()
         model.invoke()
         inference_time = (time.perf_counter() - start) * 1000
-        if not i == 0:
+        if i >= 10:
             inference_times.append(inference_time)
 
     return np.array(inference_times)
