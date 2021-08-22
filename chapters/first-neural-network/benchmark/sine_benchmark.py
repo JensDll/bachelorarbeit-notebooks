@@ -61,12 +61,18 @@ def write_to_file(result: np.ndarray, name):
 
 result = measure_performance(sine_model_cpu)
 write_to_file(result, "sine_cpu")
-print(f"CPU Inferenzgeschwindigkeit: {result.sum():.4f} ms")
+print(
+    f"CPU Inferenzgeschwindigkeit: {result.sum():.4f} ms - ({np.average(result):.4f})"
+)
 
 result = measure_performance(sine_model_quant_cpu)
 write_to_file(result, "sine_cpu_quant")
-print(f"CPU quantisierte Inferenzgeschwindigkeit: {result.sum():.4f} ms")
+print(
+    f"CPU quantisierte Inferenzgeschwindigkeit: {result.sum():.4f} ms - ({np.average(result):.4f})"
+)
 
 result = measure_performance(sine_model_tpu)
 write_to_file(result, "sine_tpu")
-print(f"TPU Inferenzgeschwindigkeit: {result.sum():.4f} ms")
+print(
+    f"TPU Inferenzgeschwindigkeit: {result.sum():.4f} ms - ({np.average(result):.4f})"
+)
